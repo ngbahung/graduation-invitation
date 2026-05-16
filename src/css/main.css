@@ -1,0 +1,1199 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Nunito:wght@400;600;700;800;900&display=swap');
+
+/* ── Reset & Root ── */
+:root {
+    --pixel-pink: #FF9EBC;
+    --pixel-purple: #B28DFF;
+    --pixel-blue: #82CAFF;
+    --pixel-yellow: #FFE57A;
+    --pixel-mint: #7AFFCB;
+    --pixel-peach: #FFB88C;
+    --ios-blue: #0A84FF;
+    --ios-red: #FF3B30;
+    --bg-gradient-start: #C9D6FF;
+    --bg-gradient-end: #E2C4FF;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+    background-attachment: fixed;
+    font-family: 'Nunito', -apple-system, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+}
+
+/* Animated pastel background blobs */
+body::before, body::after {
+    content: '';
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.5;
+    animation: floatBlob 8s ease-in-out infinite alternate;
+    pointer-events: none;
+    z-index: 0;
+}
+body::before {
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, #FFB5E8, #B5DEFF);
+    top: -100px; left: -100px;
+}
+body::after {
+    width: 350px; height: 350px;
+    background: radial-gradient(circle, #FFFFD1, #C7CEEA);
+    bottom: -80px; right: -80px;
+    animation-delay: -4s;
+}
+@keyframes floatBlob {
+    from { transform: translate(0,0) scale(1); }
+    to   { transform: translate(40px,30px) scale(1.1); }
+}
+
+/* ── iOS Phone Shell ── */
+.ios-container {
+    width: 100%;
+    height: 100svh;
+    max-width: 390px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: transparent;
+    box-shadow: 0 0 60px rgba(0,0,0,0.18);
+    z-index: 1;
+}
+
+/* ── Status Bar ── */
+.status-bar {
+    height: 44px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    color: white;
+    font-size: 15px;
+    font-weight: 800;
+    z-index: 50;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.25);
+    font-family: 'Nunito', sans-serif;
+}
+.status-bar-icons { display: flex; gap: 6px; align-items: center; }
+
+/* ── Date Header ── */
+.date-header {
+    text-align: center;
+    padding: 4px 0 10px;
+    color: white;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.2);
+}
+.date-header .day-name {
+    font-family: 'Nunito', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    opacity: 0.85;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+.date-header .day-num {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 36px;
+    line-height: 1.1;
+    color: white;
+}
+
+/* ── Kawaii Push Notification ── */
+.ios-notification {
+    position: absolute;
+    top: -120px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 92%;
+    max-width: 360px;
+    background: rgba(255,255,255,0.82);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    border-radius: 20px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.14);
+    z-index: 200;
+    cursor: pointer;
+    transition: top 0.55s cubic-bezier(0.175,0.885,0.32,1.275);
+    border: 1.5px solid rgba(255,255,255,0.5);
+}
+.ios-notification.show { top: 56px; }
+
+.notif-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #FF9EBC 0%, #B28DFF 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+    box-shadow: 0 3px 10px rgba(178,141,255,0.4);
+    image-rendering: pixelated;
+}
+.notif-content { flex: 1; }
+.notif-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1px; }
+.notif-title {
+    font-weight: 800; font-size: 12px; color: #1c1c1e;
+    font-family: 'Press Start 2P', cursive;
+    letter-spacing: 0;
+}
+.notif-time { font-size: 11px; color: #8E8E93; font-family: 'Nunito', sans-serif; }
+.notif-message { font-size: 13px; color: #333; line-height: 1.4; font-family: 'Nunito', sans-serif; font-weight: 600; }
+
+/* ── App Grid ── */
+.app-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px 12px;
+    padding: 8px 18px 20px;
+    flex: 1;
+    align-content: start;
+}
+
+.app-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.12s ease;
+    position: relative;
+    -webkit-tap-highlight-color: transparent;
+}
+.app-wrapper:active { transform: scale(0.88); }
+
+/* ── Kawaii Pixel App Icon Base ── */
+.app-icon {
+    width: 60px; height: 60px;
+    border-radius: 14px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    /* Pixelated outer border effect */
+    box-shadow:
+        0 0 0 2px rgba(255,255,255,0.7),
+        0 6px 18px rgba(0,0,0,0.18),
+        inset 0 1px 0 rgba(255,255,255,0.6);
+    image-rendering: pixelated;
+}
+
+.app-icon .pixel-emoji {
+    font-size: 30px;
+    line-height: 1;
+    filter: drop-shadow(1px 1px 0 rgba(0,0,0,0.15));
+}
+
+.app-label {
+    color: white;
+    font-size: 10px;
+    font-family: 'Press Start 2P', cursive;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+    text-align: center;
+    max-width: 68px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 1.3;
+}
+
+/* ── Kawaii App Icon Colors ── */
+.app-calendar   { background: linear-gradient(135deg, #fff 60%, #FFE4F0 100%); }
+.app-camera     { background: linear-gradient(135deg, #2C2C2E 0%, #48484A 100%); }
+.app-photos     { background: linear-gradient(135deg, #fff5f8 0%, #ffeef8 100%); }
+.app-settings   { background: linear-gradient(135deg, #636366 0%, #8E8E93 100%); }
+.app-weather    { background: linear-gradient(135deg, #5AC8FA 0%, #007AFF 100%); }
+.app-mail       { background: linear-gradient(135deg, #FF9EBC 0%, #B28DFF 100%); }
+.app-messages   { background: linear-gradient(135deg, #7AFFCB 0%, #00C7BE 100%); }
+.app-instagram  { background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
+.app-music      { background: linear-gradient(135deg, #FF2D55 0%, #FF6B81 100%); }
+.app-safari     { background: linear-gradient(135deg, #E8F5FF 0%, #fff 100%); }
+
+/* Calendar special */
+.cal-top { background: #FF2D55; height: 14px; width: 100%; position: absolute; top: 0; left: 0; }
+.cal-pixel-num {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 18px;
+    color: #1c1c1e;
+    margin-top: 8px;
+    line-height: 1;
+}
+.cal-month {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 6px;
+    color: #FF2D55;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Badge */
+.badge {
+    position: absolute;
+    top: -7px; right: -7px;
+    background: #FF3B30;
+    color: white;
+    min-width: 20px; height: 20px;
+    border-radius: 10px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 11px;
+    font-weight: 900;
+    display: flex; align-items: center; justify-content: center;
+    border: 2px solid white;
+    box-shadow: 0 2px 6px rgba(255,59,48,0.4);
+    z-index: 10;
+    animation: badgePop 2s ease-in-out infinite;
+    padding: 0 4px;
+}
+@keyframes badgePop {
+    0%,100% { transform: scale(1); }
+    50%      { transform: scale(1.15); }
+}
+
+/* Pixel sparkle decoration on icons */
+.app-icon::after {
+    content: '';
+    position: absolute;
+    top: 4px; right: 4px;
+    width: 6px; height: 6px;
+    background: rgba(255,255,255,0.8);
+    border-radius: 1px;
+    box-shadow: -3px 3px 0 rgba(255,255,255,0.4);
+}
+
+/* ── Dock ── */
+.dock-container { padding: 0 14px 28px; width: 100%; }
+.dock {
+    background: rgba(255,255,255,0.28);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border-radius: 30px;
+    padding: 14px 12px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.5);
+    border: 1.5px solid rgba(255,255,255,0.35);
+}
+.dock .app-wrapper { gap: 0; }
+.dock .app-label { display: none; }
+
+/* ── Letter / Invitation Modal ── */
+.letter-content {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.45);
+    backdrop-filter: blur(6px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 20px;
+}
+.letter-content.show { display: flex; }
+
+.letter-paper {
+    background: linear-gradient(145deg, rgba(255,255,255,0.96) 0%, rgba(255,240,255,0.94) 100%);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border: 2px solid rgba(255,255,255,0.7);
+    border-radius: 28px;
+    padding: 36px 28px 28px;
+    max-width: 90vw;
+    width: 360px;
+    box-shadow:
+        0 30px 80px rgba(178,141,255,0.25),
+        0 8px 20px rgba(0,0,0,0.12),
+        inset 0 1px 0 rgba(255,255,255,0.9);
+    animation: popIn 0.45s cubic-bezier(0.16,1,0.3,1) both;
+    position: relative;
+    overflow: hidden;
+}
+.letter-paper::before {
+    content: '';
+    position: absolute;
+    top: -50px; right: -50px;
+    width: 160px; height: 160px;
+    background: radial-gradient(circle, rgba(255,158,188,0.25), transparent 70%);
+    border-radius: 50%;
+}
+@keyframes popIn {
+    from { transform: scale(0.85) translateY(30px); opacity: 0; }
+    to   { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+.close-btn {
+    position: absolute;
+    top: 14px; right: 14px;
+    background: rgba(0,0,0,0.06);
+    border: none;
+    color: #636366;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+}
+.close-btn:hover { background: rgba(0,0,0,0.1); }
+
+/* Invitation card header */
+.invite-ribbon {
+    text-align: center;
+    margin-bottom: 16px;
+}
+.invite-ribbon .ribbon-emoji { font-size: 36px; display: block; margin-bottom: 4px; }
+.letter-title {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 13px;
+    background: linear-gradient(135deg, #FF9EBC 0%, #B28DFF 60%, #82CAFF 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center;
+    line-height: 1.6;
+    margin-bottom: 6px;
+}
+.letter-subtitle {
+    font-size: 12px;
+    color: #8E8E93;
+    text-align: center;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.letter-greeting {
+    font-size: 15px;
+    color: #3a3a3c;
+    margin: 14px 0;
+    line-height: 1.55;
+    text-align: center;
+    font-weight: 700;
+    font-family: 'Nunito', sans-serif;
+}
+
+/* Event details card */
+.letter-details {
+    margin: 14px 0;
+    padding: 16px;
+    background: linear-gradient(135deg, rgba(178,141,255,0.1) 0%, rgba(255,158,188,0.1) 100%);
+    border-radius: 18px;
+    border: 1.5px solid rgba(178,141,255,0.2);
+}
+.detail-item {
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.detail-icon {
+    font-size: 18px;
+    width: 32px; height: 32px;
+    background: rgba(255,255,255,0.7);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+.detail-label {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 8px;
+    color: #B28DFF;
+    display: block;
+    margin-bottom: 2px;
+}
+.detail-value {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+    color: #1c1c1e;
+}
+
+/* Divider */
+.invite-divider {
+    text-align: center;
+    font-size: 18px;
+    letter-spacing: 6px;
+    margin: 10px 0;
+    color: #ddd;
+}
+
+.invite-note {
+    text-align: center;
+    font-size: 13px;
+    color: #8E8E93;
+    font-weight: 700;
+    font-family: 'Nunito', sans-serif;
+}
+
+/* Action buttons */
+.btn-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+}
+.action-btn {
+    flex: 1;
+    padding: 14px 12px;
+    font-size: 13px;
+    font-weight: 800;
+    border-radius: 16px;
+    cursor: pointer;
+    text-align: center;
+    transition: transform 0.15s, filter 0.15s, box-shadow 0.15s;
+    border: none;
+    font-family: 'Nunito', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+.action-btn:active { transform: scale(0.94); filter: brightness(0.92); }
+
+.btn-checkin {
+    background: linear-gradient(135deg, #B28DFF 0%, #0A84FF 100%);
+    color: white;
+    box-shadow: 0 6px 18px rgba(10,132,255,0.35);
+}
+.btn-share {
+    background: linear-gradient(135deg, #f09433 0%, #dc2743 50%, #bc1888 100%);
+    color: white;
+    box-shadow: 0 6px 18px rgba(220,39,67,0.35);
+}
+.btn-share-checkin {
+    width: 100%;
+    padding: 13px;
+    font-size: 13px;
+    font-weight: 800;
+    border-radius: 16px;
+    cursor: pointer;
+    text-align: center;
+    border: none;
+    font-family: 'Nunito', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 10px;
+    background: linear-gradient(135deg, #f09433, #dc2743, #bc1888);
+    color: white;
+    box-shadow: 0 6px 18px rgba(220,39,67,0.35);
+    transition: transform 0.15s, filter 0.15s;
+}
+.btn-share-checkin:active { transform: scale(0.94); filter: brightness(0.92); }
+
+/* ── iOS Native Camera ── */
+.ios-camera-app {
+    display: none;
+    position: fixed; inset: 0;
+    background: #000;
+    z-index: 300;
+    flex-direction: column;
+    animation: cameraSlideUp 0.35s cubic-bezier(0.36,0.66,0.04,1) both;
+}
+.ios-camera-app.show { display: flex; }
+
+@keyframes cameraSlideUp {
+    from { transform: translateY(100%); opacity: 0; }
+    to   { transform: translateY(0); opacity: 1; }
+}
+
+.camera-top-bar {
+    height: 60px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 20px;
+    color: #fff;
+    background: rgba(0,0,0,0.5);
+    position: absolute; top: 0; left: 0; right: 0;
+    z-index: 10;
+}
+.camera-close-btn {
+    background: none; border: none;
+    color: white; font-size: 30px;
+    cursor: pointer; padding: 10px; line-height: 1;
+    font-family: 'Nunito', sans-serif;
+}
+.camera-label {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 9px;
+    color: white;
+    opacity: 0.9;
+}
+
+.camera-viewfinder {
+    flex: 1; position: relative;
+    background: #111; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 60px; margin-bottom: 140px;
+    border-radius: 20px;
+}
+.camera-viewfinder video {
+    width: 100%; height: 100%;
+    object-fit: cover; transform: scaleX(-1);
+}
+.camera-viewfinder canvas { display: none; }
+.camera-viewfinder img {
+    width: 100%; height: 100%;
+    object-fit: cover; display: none;
+}
+
+.camera-bottom-bar {
+    height: 140px; background: #000;
+    position: absolute; bottom: 0; left: 0; right: 0;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px;
+}
+.shutter-btn-wrapper {
+    width: 76px; height: 76px;
+    border-radius: 50%;
+    border: 4px solid #fff;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+.shutter-btn-wrapper:active { transform: scale(0.94); }
+.shutter-btn-inner {
+    width: 62px; height: 62px;
+    border-radius: 50%; background: #fff;
+}
+.camera-thumb-placeholder {
+    width: 48px; height: 48px;
+    border-radius: 8px;
+    border: 2px solid rgba(255,255,255,0.5);
+    background: rgba(255,255,255,0.1);
+    overflow: hidden;
+}
+.camera-thumb-placeholder img {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+}
+
+/* Preview controls */
+.preview-controls {
+    display: none;
+    position: absolute; bottom: 40px; left: 0; right: 0;
+    justify-content: space-between;
+    padding: 0 30px; z-index: 20;
+}
+.preview-controls.show { display: flex; }
+.preview-btn {
+    background: none; border: none;
+    color: white; font-size: 17px; font-weight: 700;
+    cursor: pointer;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+    font-family: 'Nunito', sans-serif;
+}
+.preview-btn.use-photo {
+    color: #0A84FF; text-shadow: none;
+    background: white;
+    padding: 10px 20px; border-radius: 24px;
+    font-weight: 800;
+}
+
+/* Share-checkin button in preview */
+.preview-btn.share-ig {
+    background: linear-gradient(135deg, #f09433, #dc2743, #bc1888);
+    color: white; text-shadow: none;
+    padding: 10px 16px; border-radius: 24px;
+    font-size: 14px; font-weight: 800;
+}
+
+/* ── Toast ── */
+.ios-toast {
+    position: fixed;
+    top: -100px; left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(20px);
+    color: #000;
+    padding: 13px 22px;
+    border-radius: 40px;
+    z-index: 500;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+    transition: top 0.5s cubic-bezier(0.175,0.885,0.32,1.275);
+    white-space: nowrap;
+}
+.ios-toast.show { top: 50px; }
+.ios-toast-icon { font-size: 20px; }
+
+/* ── Pixel Sparkle animation ── */
+@keyframes pixelSpin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+.spinning-star { display: inline-block; animation: pixelSpin 3s linear infinite; }
+
+/* ── Stacked notifications (second one sits lower) ── */
+.ios-notification.notif-music { z-index: 199; }
+.ios-notification.notif-music.show { top: 130px; }
+
+/* ── Music Player Modal ── */
+.music-modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+    z-index: 250;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.music-modal-overlay.show { display: flex; }
+
+.music-modal {
+    width: 100%;
+    max-width: 390px;
+    background: linear-gradient(160deg, #1a0030 0%, #2d0050 40%, #1a1035 100%);
+    border-radius: 28px 28px 0 0;
+    padding: 12px 0 32px;
+    animation: sheetSlideUp 0.4s cubic-bezier(0.16,1,0.3,1) both;
+    position: relative;
+    overflow: hidden;
+}
+.music-modal::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+        radial-gradient(ellipse at 20% 0%, rgba(255,45,85,0.25) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 0%, rgba(178,141,255,0.2) 0%, transparent 60%);
+    pointer-events: none;
+}
+@keyframes sheetSlideUp {
+    from { transform: translateY(100%); opacity: 0; }
+    to   { transform: translateY(0); opacity: 1; }
+}
+
+/* Drag handle */
+.music-modal-handle {
+    width: 36px; height: 4px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 2px;
+    margin: 0 auto 16px;
+}
+
+/* Top bar */
+.music-modal-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.music-modal-label {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 9px;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 1px;
+}
+.music-modal-close {
+    background: rgba(255,255,255,0.1);
+    border: none;
+    color: rgba(255,255,255,0.8);
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 15px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Nunito', sans-serif;
+    transition: background 0.2s;
+}
+.music-modal-close:hover { background: rgba(255,255,255,0.2); }
+
+/* Now playing label */
+.music-now-playing {
+    text-align: center;
+    padding: 12px 20px 0;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 8px;
+    color: var(--pixel-pink);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+/* Pulsing music note animation around the iframe */
+.music-note-row {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 8px 0 4px;
+    font-size: 18px;
+}
+.music-note-row span {
+    display: inline-block;
+    animation: noteBounce 1.2s ease-in-out infinite;
+}
+.music-note-row span:nth-child(2) { animation-delay: 0.2s; }
+.music-note-row span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes noteBounce {
+    0%,100% { transform: translateY(0) scale(1); opacity: 0.7; }
+    50%      { transform: translateY(-6px) scale(1.15); opacity: 1; }
+}
+
+/* Spotify iframe wrapper */
+.spotify-wrapper {
+    padding: 0 16px 4px;
+    position: relative;
+    z-index: 1;
+}
+.spotify-wrapper iframe {
+    width: 100%;
+    border-radius: 16px;
+    display: block;
+}
+
+/* Music badge — green dot */
+.music-badge {
+    position: absolute;
+    top: -4px; right: -4px;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: #1DB954;
+    border: 2px solid white;
+    animation: musicPulse 1.8s ease-in-out infinite;
+}
+@keyframes musicPulse {
+    0%,100% { box-shadow: 0 0 0 0 rgba(29,185,84,0.6); }
+    50%      { box-shadow: 0 0 0 5px rgba(29,185,84,0); }
+}
+
+/* ══════════════════════ COUNTDOWN WIDGET ═══════════════════════════════════ */
+.countdown-widget {
+    margin: 0 14px 4px;
+    padding: 10px 14px 12px;
+    background: rgba(255,255,255,0.22);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 22px;
+    border: 1.5px solid rgba(255,255,255,0.4);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.5);
+    text-align: center;
+}
+
+.countdown-label {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 7px;
+    color: white;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    opacity: 0.92;
+}
+
+.countdown-clocks {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.countdown-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    min-width: 48px;
+}
+
+.countdown-num {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 22px;
+    color: white;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    line-height: 1;
+    background: rgba(255,255,255,0.18);
+    border-radius: 10px;
+    padding: 6px 8px;
+    min-width: 48px;
+    text-align: center;
+    letter-spacing: 1px;
+    border: 1px solid rgba(255,255,255,0.3);
+    /* flip animation on tick */
+    transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.countdown-num.tick {
+    transform: scaleY(0.7);
+    opacity: 0.5;
+}
+
+.countdown-sub {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 5px;
+    color: rgba(255,255,255,0.75);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.countdown-sep {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 20px;
+    color: white;
+    opacity: 0.7;
+    margin-bottom: 14px;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    animation: colonBlink 1s step-end infinite;
+}
+@keyframes colonBlink {
+    0%,100% { opacity: 0.7; }
+    50%      { opacity: 0.2; }
+}
+
+/* ══════════════════════ SPOTIFY SWIPE CAROUSEL ══════════════════════════════ */
+.spotify-carousel-wrap {
+    padding: 0 16px 4px;
+    position: relative;
+    z-index: 1;
+}
+
+.spotify-carousel {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 12px;
+    scrollbar-width: none;       /* Firefox */
+    -ms-overflow-style: none;    /* IE */
+    scroll-behavior: smooth;
+}
+.spotify-carousel::-webkit-scrollbar { display: none; }
+
+.spotify-slide {
+    scroll-snap-align: start;
+    flex: 0 0 100%;
+    min-width: 100%;
+}
+
+.spotify-slide iframe {
+    width: 100%;
+    border-radius: 16px;
+    display: block;
+}
+
+/* Dot indicators */
+.spotify-dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.spotify-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.35);
+    border: 1px solid rgba(255,255,255,0.5);
+    cursor: pointer;
+    transition: background 0.25s, transform 0.25s;
+}
+
+.spotify-dot.active {
+    background: #1DB954;
+    border-color: #1DB954;
+    transform: scale(1.3);
+    box-shadow: 0 0 6px rgba(29,185,84,0.6);
+}
+
+/* ══════════════════════ CALENDAR EVENT MODAL ════════════════════════════════ */
+.cal-modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.48);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 150;
+    padding: 20px;
+}
+.cal-modal-overlay.show { display: flex; }
+
+.cal-modal-card {
+    background: #ffffff;
+    border-radius: 24px;
+    max-width: 90vw;
+    width: 340px;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.22), 0 8px 24px rgba(0,0,0,0.12);
+    animation: popIn 0.4s cubic-bezier(0.16,1,0.3,1) both;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Red iOS-Calendar-style header */
+.cal-modal-header {
+    background: linear-gradient(135deg, #FF3B30 0%, #FF6B30 100%);
+    padding: 20px 24px 18px;
+    text-align: center;
+}
+.cal-modal-month {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 8px;
+    color: rgba(255,255,255,0.85);
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+}
+.cal-modal-day {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 42px;
+    color: #ffffff;
+    line-height: 1;
+    text-shadow: 0 3px 12px rgba(0,0,0,0.2);
+}
+.cal-modal-weekday {
+    font-family: 'Nunito', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.8);
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+.cal-event-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 20px 4px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    font-weight: 900;
+    color: #1c1c1e;
+    line-height: 1.3;
+}
+.cal-event-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: #FF3B30;
+    flex-shrink: 0;
+    box-shadow: 0 0 6px rgba(255,59,48,0.5);
+}
+
+.cal-event-details {
+    padding: 8px 20px 4px;
+    display: flex; flex-direction: column; gap: 10px;
+}
+.cal-event-row {
+    display: flex; align-items: flex-start; gap: 12px;
+}
+.cal-event-icon {
+    font-size: 17px; width: 28px;
+    text-align: center; flex-shrink: 0; margin-top: 1px;
+}
+.cal-event-label {
+    display: block;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 6px; color: #8E8E93;
+    letter-spacing: 1px; margin-bottom: 2px;
+}
+.cal-event-value {
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px; font-weight: 700; color: #1c1c1e;
+}
+
+.cal-event-note {
+    margin: 12px 20px 0;
+    padding: 10px 14px;
+    background: #FFF9E6;
+    border-radius: 12px;
+    border: 1px solid #FFE57A;
+    font-family: 'Nunito', sans-serif;
+    font-size: 12px; font-weight: 700;
+    color: #856404; line-height: 1.4;
+}
+
+.cal-add-btn {
+    display: flex; align-items: center; justify-content: center;
+    gap: 10px;
+    margin: 14px 20px 4px;
+    padding: 14px 20px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #4285F4 0%, #34A853 100%);
+    color: white;
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px; font-weight: 800;
+    text-decoration: none;
+    transition: filter 0.2s, transform 0.15s, box-shadow 0.2s;
+    box-shadow: 0 6px 20px rgba(66,133,244,0.35);
+}
+.cal-add-btn:hover  { filter: brightness(1.06); }
+.cal-add-btn:active { transform: scale(0.97); }
+
+.cal-sub-note {
+    text-align: center;
+    font-family: 'Nunito', sans-serif;
+    font-size: 11px; color: #8E8E93;
+    padding: 0 20px 18px; font-weight: 600;
+}
+
+/* ══════════════════════ MAPS APP ICON ══════════════════════════════════════ */
+.app-maps  { background: linear-gradient(135deg, #34C759 0%, #30B0C7 100%); }
+
+/* ══════════════════════ PHONE APP ICON ═════════════════════════════════════ */
+.app-phone { background: linear-gradient(135deg, #34C759 0%, #25A244 100%); }
+
+/* ══════════════════════ MAPS MODAL ══════════════════════════════════════════ */
+.map-modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+    z-index: 150;
+}
+.map-modal-overlay.show { display: flex; }
+
+.map-modal-sheet {
+    background: #1c1c1e;
+    border-radius: 24px 24px 0 0;
+    width: 100%;
+    max-width: 430px;
+    display: flex;
+    flex-direction: column;
+    max-height: 92vh;
+    animation: sheetSlideUp 0.4s cubic-bezier(0.16,1,0.3,1) both;
+    overflow: hidden;
+}
+@keyframes sheetSlideUp {
+    from { transform: translateY(100%); }
+    to   { transform: translateY(0); }
+}
+
+/* Drag handle */
+.map-modal-handle {
+    width: 40px; height: 5px;
+    border-radius: 3px;
+    background: rgba(255,255,255,0.25);
+    margin: 10px auto 0;
+    flex-shrink: 0;
+}
+
+/* Top bar */
+.map-modal-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px 10px;
+    flex-shrink: 0;
+}
+.map-modal-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.map-modal-icon { font-size: 26px; }
+.map-modal-title {
+    font-family: 'Nunito', sans-serif;
+    font-size: 16px;
+    font-weight: 900;
+    color: #ffffff;
+    line-height: 1.2;
+}
+.map-modal-subtitle {
+    font-family: 'Nunito', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.5);
+}
+.map-modal-close {
+    background: rgba(255,255,255,0.12);
+    border: none;
+    color: rgba(255,255,255,0.7);
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 15px;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+    flex-shrink: 0;
+}
+.map-modal-close:hover { background: rgba(255,255,255,0.22); }
+
+/* Address chip */
+.map-address-chip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 16px 10px;
+    padding: 9px 14px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 12px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.75);
+    flex-shrink: 0;
+}
+
+/* Map iframe wrapper */
+.map-iframe-wrap {
+    flex: 1;
+    min-height: 280px;
+    max-height: 420px;
+    overflow: hidden;
+    position: relative;
+    margin: 0 0;
+}
+.map-iframe-wrap iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* Action buttons row */
+.map-actions {
+    display: flex;
+    gap: 10px;
+    padding: 12px 16px 24px;
+    flex-shrink: 0;
+}
+.map-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 13px 10px;
+    border-radius: 14px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    text-decoration: none;
+    transition: filter 0.2s, transform 0.1s;
+    cursor: pointer;
+}
+.map-btn:active { transform: scale(0.97); }
+
+.map-btn-primary {
+    background: linear-gradient(135deg, #34C759 0%, #30B0C7 100%);
+    color: #ffffff;
+    box-shadow: 0 4px 16px rgba(52,199,89,0.35);
+}
+.map-btn-primary:hover { filter: brightness(1.07); }
+
+.map-btn-secondary {
+    background: rgba(255,255,255,0.1);
+    border: 1.5px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.85);
+}
+.map-btn-secondary:hover { background: rgba(255,255,255,0.17); }
