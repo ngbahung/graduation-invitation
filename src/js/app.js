@@ -1,6 +1,7 @@
 // ── State ──────────────────────────────────────────────────────
 let latestImageData = null;
 let videoStream     = null;
+let currentFacingMode = 'user'; // 'user' (front) or 'environment' (back)
 
 // ── Guest Name ─────────────────────────────────────────────────
 function getGuestName() {
@@ -219,19 +220,65 @@ async function openCamera() {
     const modal = document.getElementById('cameraModal');
     modal.classList.add('show');
 
+    // Reset zoom slider to 1x
+    const zoomSlider = document.getElementById('zoomSlider');
+    if (zoomSlider) zoomSlider.value = 1;
+
     try {
         const stream = await navigator.mediaDevices.getUserMedia({
-            video: { facingMode: 'user', width: { ideal: 1080 }, height: { ideal: 1920 } },
+            video: { 
+                facingMode: currentFacingMode,
+                width: { ideal: 1080 }, 
+                height: { ideal: 1920 } 
+            },
             audio: false
         });
         const video = document.getElementById('videoStream');
         video.srcObject = stream;
+        
+        // Mirror front camera only
+        video.style.transform = (currentFacingMode === 'user') ? 'scaleX(-1)' : 'scaleX(1)';
+        
         video.play();
         videoStream = stream;
         resetCameraUI();
+
+        // Check for zoom support after video starts
+        const track = stream.getVideoTracks()[0];
+        const capabilities = track.getCapabilities();
+        const zoomControl = document.getElementById('cameraZoomControl');
+        
+        if (capabilities.zoom && zoomControl) {
+            zoomControl.style.display = 'flex';
+            zoomSlider.min = capabilities.zoom.min;
+            zoomSlider.max = capabilities.zoom.max;
+            zoomSlider.step = capabilities.zoom.step;
+            zoomSlider.value = 1; // Default to 1x
+        } else if (zoomControl) {
+            zoomControl.style.display = 'none';
+        }
+
     } catch (err) {
+        console.error("Camera Error:", err);
         showToast('📵', 'Camera unavailable');
         closeCamera();
+    }
+}
+
+async function switchCamera() {
+    if (videoStream) {
+        videoStream.getTracks().forEach(t => t.stop());
+    }
+    currentFacingMode = (currentFacingMode === 'user') ? 'environment' : 'user';
+    openCamera();
+}
+
+function handleZoomChange(val) {
+    if (!videoStream) return;
+    const track = videoStream.getVideoTracks()[0];
+    const capabilities = track.getCapabilities();
+    if (capabilities.zoom) {
+        track.applyConstraints({ advanced: [{ zoom: parseFloat(val) }] });
     }
 }
 
@@ -245,8 +292,12 @@ function capturePhoto() {
     canvas.height = video.videoHeight || 1920;
 
     ctx.save();
-    ctx.scale(-1, 1);
-    ctx.drawImage(video, -canvas.width, 0, canvas.width, canvas.height);
+    if (currentFacingMode === 'user') {
+        ctx.scale(-1, 1);
+        ctx.drawImage(video, -canvas.width, 0, canvas.width, canvas.height);
+    } else {
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    }
     ctx.restore();
 
     latestImageData = canvas.toDataURL('image/jpeg', 0.92);
@@ -275,8 +326,11 @@ function resetCameraUI() {
 
     const bar   = document.getElementById('cameraBottomBar');
     const ctrl  = document.getElementById('previewControls');
+    const zoom  = document.getElementById('cameraZoomControl');
+    
     if (bar)  bar.style.display = 'flex';
     if (ctrl) ctrl.classList.remove('show');
+    // Zoom control visibility is handled in openCamera based on support
 }
 
 function closeCamera() {

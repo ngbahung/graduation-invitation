@@ -318,11 +318,12 @@
     <div class="camera-top-bar">
         <button class="camera-close-btn" onclick="closeCamera()">×</button>
         <span class="camera-label">📷 CHECK-IN CAM</span>
-        <!-- Flash icon -->
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
-             stroke-linecap="round" stroke-linejoin="round">
-            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
-        </svg>
+        <!-- Switch camera button -->
+        <button class="camera-switch-btn" onclick="switchCamera()" aria-label="Switch Camera">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+            </svg>
+        </button>
     </div>
 
     <!-- Viewfinder -->
@@ -330,6 +331,13 @@
         <video id="videoStream" playsinline autoplay muted></video>
         <canvas id="captureCanvas"></canvas>
         <img id="resultImage" alt="captured photo"/>
+    </div>
+
+    <!-- Zoom Control -->
+    <div class="camera-zoom-control" id="cameraZoomControl" style="display:none">
+        <span class="zoom-label">1x</span>
+        <input type="range" id="zoomSlider" min="1" max="5" step="0.1" value="1" oninput="handleZoomChange(this.value)">
+        <span class="zoom-label">5x</span>
     </div>
 
     <!-- Bottom bar: shutter + thumbnail -->
